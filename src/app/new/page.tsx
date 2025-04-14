@@ -8,7 +8,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { Header } from "../header";
-import { neon } from "@neondatabase/serverless";
 
 export default function NewPostPage() {
   const [username, setUsername] = useState("");
