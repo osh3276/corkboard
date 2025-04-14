@@ -15,7 +15,7 @@ datasource db {
 }
 
 model Post {
-  id        String   @id @default(cuid())
+  id        Int   @id @default(autoincrement())
   title     String
   content   String
   author    String?  // null if anonymous

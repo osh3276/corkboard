@@ -1,19 +1,55 @@
+"use client";
+
 import { Header } from "@/app/header";
-import { PrismaClient } from "@prisma/client";
 import { DateTime } from "luxon";
+import { useState, useEffect } from "react";
 
-const prisma = new PrismaClient();
+interface PostPageProps {
+  params: { id: string };
+}
 
-export default async function PostPage({ params }: { params: { id: string } }) {
-  const post = await prisma.post.findUnique({
-    where: { id: params.id },
-  });
+interface Post {
+  title: string;
+  content: string;
+  author: string | null;
+  createdAt: string;
+}
 
-  if (!post) return <p>post not found.</p>;
+export default function PostPage({ params }: PostPageProps) {
+  const [post, setPost] = useState<Post | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const { id } = params;
+
+  useEffect(() => {
+    // Fetch post data from the API route
+    const fetchPost = async () => {
+      try {
+        const response = await fetch(`/api/posts/${id}`);
+        if (!response.ok) {
+          throw new Error("Post not found");
+        }
+        const data = await response.json();
+        setPost(data);
+      } catch (err: any) {
+        setError(err.message);
+      }
+    };
+
+    fetchPost();
+  }, [id]);
+
+  if (!post) {
+    return (
+      <>
+        <Header />S<p>loading...</p>
+      </>
+    );
+  }
 
   const { title, content, author, createdAt } = post;
   const displayDate =
-    DateTime.fromISO(createdAt.toISOString(), { zone: "utc" })
+    DateTime.fromISO(createdAt, { zone: "utc" })
       .setZone(DateTime.now().zoneName)
       .toRelative({ base: DateTime.now() }) || "just now";
 

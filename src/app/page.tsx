@@ -39,7 +39,7 @@ export default function HomePage() {
     return (
       <>
         <Header />
-        <p className="posts-container">no new posts.</p>
+        <p className="posts-container">no posts in the last 24 hours.</p>
       </>
     );
   }

@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -32,30 +32,53 @@ export default function NewPostPage() {
     }
   }
 
+  const labels = [
+    "sing to the world.",
+    "release your inner demons.",
+    "shout into the void.",
+    "whisper your secrets.",
+    "confess your crimes (or hobbies).",
+    "nobody will know it's you.",
+    "stick it to the cork.",
+  ];
+  const content_placeholders = [
+    "your song",
+    "your demons",
+    "your message",
+    "your secrets",
+    "your confession",
+    "your true self",
+    "your stickie",
+  ];
+  // generate random number for message
+  const i = useMemo(() => Math.floor(Math.random() * labels.length), []);
+  const label = labels[i];
+  const content_placeholder = content_placeholders[i];
+
   return (
     <>
       <Header />
       <main className="max-w-xl mx-auto mt-8 px-4">
-        <h1 className="text-3xl font-bold mb-4">New Post</h1>
+        <h1 className="text-3xl font-bold mb-4">{label}</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
-            placeholder="Username (optional)"
+            placeholder="username (leave blank for anonymous)"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
           <Input
-            placeholder="Title"
+            placeholder="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
           <Textarea
-            placeholder="Content"
+            placeholder={content_placeholder}
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />
           <Button type="submit" className="w-full">
-            Post
+            post
           </Button>
         </form>
       </main>
