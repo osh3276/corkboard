@@ -51,7 +51,10 @@ export default function NewPostPage() {
     "your stickie",
   ];
   // generate random number for message
-  const i = useMemo(() => Math.floor(Math.random() * labels.length), []);
+  const i = useMemo(
+    () => Math.floor(Math.random() * labels.length),
+    [labels.length],
+  );
   const label = labels[i];
   const content_placeholder = content_placeholders[i];
 

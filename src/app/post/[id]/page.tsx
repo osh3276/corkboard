@@ -3,10 +3,7 @@
 import { Header } from "@/app/header";
 import { DateTime } from "luxon";
 import { useState, useEffect } from "react";
-
-interface PostPageProps {
-  params: { id: string };
-}
+import { useParams } from "next/navigation";
 
 interface Post {
   title: string;
@@ -15,13 +12,16 @@ interface Post {
   createdAt: string;
 }
 
-export default function PostPage({ params }: PostPageProps) {
+export default function PostPage() {
+  const params = useParams();
+  const id = params?.id as string;
+
   const [post, setPost] = useState<Post | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const { id } = params;
-
   useEffect(() => {
+    if (!id) return;
+
     // Fetch post data from the API route
     const fetchPost = async () => {
       try {
@@ -31,18 +31,38 @@ export default function PostPage({ params }: PostPageProps) {
         }
         const data = await response.json();
         setPost(data);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+          console.error(err.message);
+        } else {
+          setError("something went wrong.");
+          console.error("Unknown error", err);
+        }
       }
     };
 
     fetchPost();
   }, [id]);
 
+  if (error) {
+    return (
+      <>
+        <Header />
+        <main className="max-w-3xl mx-auto mt-10 mb-10 px-4">
+          <p>{error}</p>
+        </main>
+      </>
+    );
+  }
+
   if (!post) {
     return (
       <>
-        <Header />S<p>loading...</p>
+        <Header />
+        <main className="max-w-3xl mx-auto mt-10 mb-10 px-4">
+          <p>loading...</p>
+        </main>
       </>
     );
   }
