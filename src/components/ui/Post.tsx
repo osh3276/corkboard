@@ -7,13 +7,13 @@ import {
 import { FC } from "react";
 
 interface PostProps {
+  postID: number;
   author: string;
   date: string;
   content: string;
-  postNumber: string;
 }
 
-const Post: FC<PostProps> = ({ author, date, content, postNumber }) => {
+const Post: FC<PostProps> = ({ postID, author, date, content }) => {
   return (
     <Card className="max-w-sm mx-0 mb-2.5 text-wrap">
       {/* Card Header */}
@@ -31,7 +31,7 @@ const Post: FC<PostProps> = ({ author, date, content, postNumber }) => {
 
       {/* Card Footer */}
       <CardFooter>
-        <span className="text-xs text-muted-foreground">#{postNumber}</span>
+        <span className="text-xs text-muted-foreground">#{postID}</span>
       </CardFooter>
     </Card>
   );

@@ -1,19 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Masonry from "react-masonry-css";
 import { DateTime } from "luxon";
 import Link from "next/link";
 import Post from "@/components/ui/Post"; // Adjust path if needed
 import { Header } from "./header";
+import { useEffect, useState } from "react";
 
 type PostData = {
-  id: string;
+  id: number;
   title: string;
   content: string;
   author?: string | null;
   createdAt: string;
-  expiresAt: string;
 };
 
 const breakpointColumnsObj = {
@@ -25,15 +24,49 @@ const breakpointColumnsObj = {
   320: 1,
 };
 
+function getShortRelativeTime(isoString: string): string {
+  const now = DateTime.now();
+  const then = DateTime.fromISO(isoString, { zone: "utc" }).setZone(
+    now.zoneName,
+  );
+  const diff = now
+    .diff(then, ["years", "months", "days", "hours", "minutes", "seconds"])
+    .toObject();
+
+  if (diff.years && diff.years >= 1) return `${Math.floor(diff.years)}y ago`;
+  if (diff.months && diff.months >= 1)
+    return `${Math.floor(diff.months)}mo ago`;
+  if (diff.days && diff.days >= 1) return `${Math.floor(diff.days)}d ago`;
+  if (diff.hours && diff.hours >= 1) return `${Math.floor(diff.hours)}h ago`;
+  if (diff.minutes && diff.minutes >= 1)
+    return `${Math.floor(diff.minutes)}m ago`;
+  return `just now`;
+}
+
 export default function HomePage() {
   const [posts, setPosts] = useState<PostData[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/posts")
-      .then((res) => res.json())
-      .then((data) => setPosts(data.reverse()))
-      .catch((err) => console.error("Failed to fetch posts:", err));
+      .then((res) => {
+        if (!res.ok) throw new Error("failed to fetch posts");
+        return res.json();
+      })
+      .then(setPosts)
+      .catch((err) => {
+        console.error(err);
+        setError("couldn't load posts.");
+      });
   }, []);
+
+  if (error)
+    return (
+      <>
+        <Header />
+        <p className="posts-container">{error}</p>
+      </>
+    );
 
   if (posts.length === 0) {
     return (
@@ -55,14 +88,10 @@ export default function HomePage() {
           <Link href={`/post/${post.id}`} key={post.id}>
             <Post
               key={post.id}
+              postID={post.id}
               author={post.author || "anonymous"}
-              date={
-                DateTime.fromISO(post.createdAt, { zone: "utc" })
-                  .setZone(DateTime.now().zoneName)
-                  .toRelative({ base: DateTime.now() }) || "just now"
-              }
+              date={getShortRelativeTime(post.createdAt)}
               content={post.title}
-              postNumber={post.id}
             />
           </Link>
         ))}
