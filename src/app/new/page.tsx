@@ -86,7 +86,7 @@ export default function NewPostPage() {
           <div>
             <Input
               name="username"
-              placeholder="username (leave blank for anonymous)"
+              placeholder="username"
               value={username}
               onChange={handleUsernameChange}
             />
@@ -119,7 +119,12 @@ export default function NewPostPage() {
           <Button
             type="submit"
             className="w-full"
-            disabled={pending || titleLength === 0 || contentLength === 0}
+            disabled={
+              pending ||
+              usernameLength === 0 ||
+              titleLength === 0 ||
+              contentLength === 0
+            }
           >
             {pending ? "posting..." : "post"}
           </Button>
