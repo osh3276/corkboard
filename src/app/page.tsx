@@ -46,6 +46,7 @@ function getShortRelativeTime(isoString: string): string {
 export default function HomePage() {
   const [posts, setPosts] = useState<PostData[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/posts")
@@ -57,7 +58,8 @@ export default function HomePage() {
       .catch((err) => {
         console.error(err);
         setError("couldn't load posts.");
-      });
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   if (error)
@@ -65,6 +67,14 @@ export default function HomePage() {
       <>
         <Header />
         <p className="posts-container">{error}</p>
+      </>
+    );
+
+  if (loading)
+    return (
+      <>
+        <Header />
+        <p className="posts-container">loading...</p>
       </>
     );
 
