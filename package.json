@@ -4,14 +4,15 @@
     "private": true,
     "scripts": {
         "dev": "next dev --turbopack",
-        "build": "prisma generate && next build",
+        "build": "next build",
+        "postinstall": "prisma generate",
         "start": "next start",
-        "lint": "next lint",
-        "postinstall": "prisma generate"
+        "lint": "next lint"
     },
     "dependencies": {
         "@neondatabase/serverless": "^1.0.0",
         "@prisma/client": "6.6.0",
+        "@prisma/nextjs-monorepo-workaround-plugin": "^6.6.0",
         "@radix-ui/react-dialog": "^1.1.7",
         "@radix-ui/react-slot": "^1.2.0",
         "@vercel/analytics": "^1.5.0",
