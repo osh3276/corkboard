@@ -1,7 +1,16 @@
-import type { NextConfig } from "next";
+import { type NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.externals = [
+        ...((config.externals as any) || []),
+        "prisma",
+        "@prisma/client",
+      ];
+    }
+    return config;
+  },
 };
 
 export default nextConfig;
