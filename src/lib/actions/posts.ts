@@ -42,6 +42,8 @@ export async function createPost(formData: FormData) {
     throw new Error("Missing title or content");
   }
 
+  console.log(username, title, content);
+
   const post: typeof postsTable.$inferInsert = {
     username: username,
     title: title,
