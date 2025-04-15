@@ -13,7 +13,7 @@ export async function getPostById(id: number) {
     throw new Error("Invalid post ID");
   }
 
-  const post = await db
+  const [post] = await db
     .select()
     .from(postsTable)
     .where(eq(postsTable.id, id))

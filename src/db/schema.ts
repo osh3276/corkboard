@@ -5,5 +5,5 @@ export const postsTable = pgTable("posts", {
   username: varchar({ length: 255 }),
   title: varchar({ length: 255 }).notNull(),
   content: varchar({ length: 255 }).notNull(),
-  createdAt: timestamp("created_at").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });

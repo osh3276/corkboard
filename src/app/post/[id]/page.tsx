@@ -25,7 +25,7 @@ export default async function PostPage({
     );
   }
 
-  const { title, content, author, createdAt } = post;
+  const { username, title, content, createdAt } = post;
   const displayDate =
     DateTime.fromISO(createdAt.toISOString(), { zone: "utc" })
       .setZone(DateTime.now().zoneName)
@@ -38,7 +38,7 @@ export default async function PostPage({
         <h1 className="text-4xl font-bold mb-2 break-words">{title}</h1>
 
         <div className="text-sm text-muted-foreground mb-6">
-          <p className="text-sm">by {author || "anonymous"}</p>
+          <p className="text-sm">by {username || "anonymous"}</p>
           <p className="text-sm">{displayDate}</p>
         </div>
         <p className="whitespace-pre-wrap break-words">{content}</p>
