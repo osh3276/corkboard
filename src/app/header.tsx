@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export function Header() {
   return (
-    <div className="header p-2 m-0 flex items-center justify-between text-left bg-secondary">
+    <div className="header p-2 m-0 flex items-center justify-between text-left bg-muted">
       <Link href="/" className="text-5xl font-bold">
         the corkboard.
       </Link>
