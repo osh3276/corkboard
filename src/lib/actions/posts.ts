@@ -2,8 +2,7 @@
 
 import { postsTable } from "@/db/schema";
 import { drizzle } from "drizzle-orm/neon-http";
-import { lt } from "drizzle-orm";
-import { eq } from "drizzle-orm";
+import { eq, desc, lt } from "drizzle-orm";
 import { subHours } from "date-fns";
 
 const db = drizzle(process.env.DATABASE_URL!);
@@ -28,7 +27,10 @@ export async function getPostById(id: number) {
 
 export async function getAllPosts() {
   console.log("Getting all posts");
-  const posts = await db.select().from(postsTable);
+  const posts = await db
+    .select()
+    .from(postsTable)
+    .orderBy(desc(postsTable.createdAt));
 
   return posts;
 }
