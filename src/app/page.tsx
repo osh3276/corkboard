@@ -11,7 +11,7 @@ type PostData = {
   id: number;
   title: string;
   content: string;
-  author?: string | null;
+  username?: string | null;
   createdAt: string;
 };
 
@@ -99,7 +99,7 @@ export default function HomePage() {
             <Post
               key={post.id}
               postID={post.id}
-              author={post.author || "anonymous"}
+              author={post.username || "anonymous"}
               date={getShortRelativeTime(post.createdAt)}
               content={post.title}
             />
