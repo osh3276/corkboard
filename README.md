@@ -12,7 +12,7 @@ corkboard is a lightweight, ephemeral message board where users can post content
 
 ## tech stack
 - next.js
-- prisma
+- drizzle
 - neon
 - vercel
 
